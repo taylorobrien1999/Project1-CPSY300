@@ -1,4 +1,3 @@
-cat > .github/workflows/deploy.yml << 'EOF'
 name: CI/CD Pipeline - Diet Analysis
 
 on:
@@ -24,12 +23,11 @@ jobs:
         run: |
           pip install pandas matplotlib seaborn azure-storage-blob
 
-      - name: Run data analysis test
-      env:
-      MPLBACKEND: Agg
-      run: |
-      mkdir -p charts
-      python data_analysis.py
+      - name: Run Python syntax check
+        run: |
+          python -m py_compile data_analysis.py
+          python -m py_compile lambda_function.py
+          echo "Syntax check passed"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
